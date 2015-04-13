@@ -1,0 +1,392 @@
+\documentclass[compress]{beamer}
+
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+% \usepackage{subfigure}
+\usepackage{fancyvrb}
+%\usepackage{multicolumn}
+
+\mode<presentation>
+{
+	\usetheme{Warsaw}
+	\setbeamertemplate{headline}{}
+	\setbeamertemplate{navigation symbols}{}
+	\setbeamercovered{transparent}
+	\useinnertheme{rectangles}
+}
+\setcounter{tocdepth}{1}
+
+\title[Dreamster Workshop]{Dreamster Workshop @ RoboticsDay 2015}
+\author[Robotics Day]
+{
+The Dreamster Community \\
+Lucas, Lucía, Sebastián, Viviana, Martín, Gisela, Ignacio
+}
+
+\usepackage{default}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\section{Introducción}
+\subsection{Objetivos}
+
+\begin{frame}
+ \frametitle{¿Qué vamos a hacer?}
+
+\begin{center}
+ \color{red}{\textbf{Limpiar un escritorio con un robot}}
+\end{center}
+
+\begin{block}{¿Cómo?}
+\begin{itemize}
+ \item Usando un Dreamster como base.
+ \item Arduino para ensenarle a hacer cosas.
+\end{itemize}
+\end{block}
+
+\begin{center}
+\includegraphics[width=0.8\textwidth]{./img/desk.png} 
+\end{center}
+
+\end{frame}
+ 
+\begin{frame}
+\begin{center}
+\frametitle{¿Qué vamos a hacer?}
+\includegraphics[width=0.6\textwidth]{./img/equipo.jpg}
+
+\color{red}{\textbf{Trabajar en equipos}}
+\end{center}
+\begin{itemize}
+ \item Cada equipo va a tener un robot
+ \item Hoy y mañana preparamos los robots.
+ \item El domingo hacemos una comptencia.
+\end{itemize}
+
+\end{frame}
+
+\subsection{Presentando el Arduino}
+
+% Arduino fiscamente
+\begin{frame}
+ \frametitle{¿Qué es Arduino?}
+\begin{block}{Arduino.cc dice:} 
+\begin{itemize}
+ \item Computadora que nos permite interactuar con el mundo real.
+ \item Utiliza un microcontrolador simple y un entorno de desarrollo sencillo.
+\end{itemize}
+\end{block}
+\begin{center}
+ \includegraphics[height=0.6\textheight]{./img/arduino-leonardo-pinout.png}
+\end{center}
+\end{frame}
+
+% Programando arduino
+\begin{frame}
+ \frametitle{¿Qué es Arduino?}
+\begin{columns}
+ \column{0.6\textwidth}
+  \includegraphics[width=\columnwidth]{./img/arduino-ide-text.png}
+\column{0.5\textwidth}
+  \begin{itemize}
+   \item Multiplataforma
+   \item Incluye un editor de código
+   \item consola serie
+   \item transfiere el código a la placa
+  \end{itemize}
+
+\end{columns}
+
+\end{frame}
+
+\subsection{Presentando el Dreamster}
+\begin{frame}
+ \frametitle{¿Qué es Dreamster?}
+ \begin{center}
+ \includegraphics[width=0.8\textwidth]{./img/dreamster_logo.png}
+ \vspace{0.5cm}
+ 
+ \color{red}{\textbf{¡Veamos un video!}}
+ \end{center}
+\end{frame}
+
+\begin{frame}
+ \frametitle{El robot}
+ \begin{center}
+ \includegraphics[height=0.8\textheight]{./img/dreamster-top.jpg} 
+ \end{center}
+\end{frame}
+
+\begin{frame}
+ \frametitle{El robot}
+ \begin{center}
+ \includegraphics[height=0.8\textheight]{./img/dreamster-back.jpg} 
+ \end{center}
+\end{frame}
+
+% La competencia
+\begin{frame}
+ \frametitle{La competencia}
+Tareas:
+\begin{itemize}
+ \item Encontrar un objeto
+ \item Moverse en la dirección del objeto
+ \item Identificar el borde de la mesa
+\end{itemize}
+Qué podemos hacer:
+\begin{itemize}
+ \item Medir distancias
+ \item Medir el color del piso
+ \item Movernos
+\end{itemize}
+ \end{frame}
+
+
+\section{Programación del Dreamster}
+\subsection{Uso del compilador y IO}
+
+\begin{frame}[fragile]
+ \frametitle{Primeros pasos}
+\begin{columns}
+ \column{0.5\textwidth}
+\begin{enumerate}
+ \item Usuarios registrados.
+
+Nombre de usuario: \verb|taller_mbed_0X|.
+
+Por ej.: \verb|taller_mbed_01|
+
+Clave: \verb|taller_mbed_0X|
+ \item Entrar al compilador.
+\end{enumerate}
+\column{0.5\textwidth}
+\begin{center}
+ \includegraphics[width=\columnwidth]{./img/web.png}
+ % web.png: 993x736 pixel, 98dpi, 25.74x19.08 cm, bb=0 0 730 541
+\end{center}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Nuestro primer código}
+Vamos a prender un led $\rightarrow$ Creamos un programa nuevo.
+\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
+ DigitalOut myled(LED1);
+          ...
+ myled = 1;
+\end{Verbatim} 
+Muy fácil.... usemos el botón para prender el led..
+\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
+ DigitalIn boton(p18);
+          ...
+ boton.mode(PullUp);
+ if (boton == 0) {
+  wait(0.01);     //debounce.
+  if (boton == 0) //hacer algo.
+          ...
+\end{Verbatim} 
+\end{frame}
+
+\subsection{Timers y PWM}
+\begin{frame}[fragile]
+ \frametitle{Complicándola un poco}
+Dimmer para los leds.
+\begin{columns}
+\column{0.6\textwidth}
+\begin{description}
+ \item[PWM:] Pulse Width Modulation, modulación de ancho de pulso.
+ \item[Ticker:] Interfaz usada para definir un evento que se repite a intervalos regulares de tiempo.
+ \end{description}
+\column{0.4\textwidth}
+\begin{center}
+ \includegraphics[width=\textwidth]{./img/pwm_image.pdf}
+ % pwm_image.pdf: 166x91 pixel, 72dpi, 5.86x3.21 cm, bb=0 0 166 91
+\end{center}
+\end{columns}
+
+\begin{center}
+\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
+ Ticker evento;
+ PwmOut led1(LED1);
+      ...
+ evento.attach(&dimmer, 0.1);
+      ...
+ led1 = led1 + 0.1;
+\end{Verbatim}
+\end{center}
+\end{frame}
+
+\subsection{Puerto Serie}
+\begin{frame}[fragile]
+ \frametitle{¡Hola mundo!}
+Todos lo estábamos esperando...
+\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
+  Serial pc(USBTX, USBRX); // tx, rx
+            ...
+  pc.printf("Hello World!\n"); 
+\end{Verbatim}
+\begin{center}
+ \includegraphics[width=0.6\textwidth]{./img/AccessPort.jpg}
+ % AccessPort.jpg: 772x512 pixel, 762dpi, 2.57x1.71 cm, bb=0 0 73 48
+\end{center}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Intervalo!!}
+\vspace{2cm}
+\begin{center}
+\Huge{Nos vemos en 15 minutos.}
+\end{center}
+\vspace{2cm}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Bienvenidos}
+
+Los autitos los pudimos hacer gracias a la ayuda del Club de Robótica y la rama IEEE de FIUBA.
+\begin{columns}
+\column{.5\textwidth}
+\begin{center}
+ \includegraphics[width=\columnwidth]{./img/robotica.png}
+ % robotica.png: 2326x2340 pixel, 90dpi, 65.65x66.05 cm, bb=0 0 1861 1872
+\end{center}
+\column{.5\textwidth}
+\begin{center}
+ \includegraphics[width=\columnwidth]{./img/ieee.png}
+ % robotica.png: 2326x2340 pixel, 90dpi, 65.65x66.05 cm, bb=0 0 1861 1872
+\end{center}
+\end{columns}
+
+\end{frame}
+
+\section{Conociendo la planta}
+\subsection{Vista general}
+\begin{frame}
+ \frametitle{El mbed Car - top}
+\begin{center}
+ \includegraphics[height=0.8\textheight]{./img/mbed_car_top.png}
+ % mbed_car_top.pdf: 2147x1792 pixel, 72dpi, 75.74x63.22 cm, bb=0 0 2147 1792
+\end{center}
+% Foto del auto con las partes marcadas
+\end{frame}
+
+\begin{frame}
+ \frametitle{El mbed Car - bottom}
+\begin{center}
+ \includegraphics[height=0.8\textheight]{./img/mbed_car_bottom.png}
+ % mbed_car_top.pdf: 2147x1792 pixel, 72dpi, 75.74x63.22 cm, bb=0 0 2147 1792
+\end{center}
+% Foto del auto con las partes marcadas
+\end{frame}
+
+
+\subsection{Actuadores y sensores}
+\begin{frame}[fragile]
+ \frametitle{Sensores - TCRT1000}
+\begin{columns}
+\column{0.7\textwidth}
+La salida del sensor es un valor analógico $0 \sim 3.3V$, conectado al AD del mbed. Usando \verb|AnalogIn::read()| se ve 
+como un valor float entre 0 y 1.
+\begin{center}
+ \includegraphics[width=0.3\columnwidth]{./img/cny70.jpg}
+ % cny70.jpg: 250x238 pixel, 180dpi, 3.53x3.36 cm, bb=0 0 100 95
+\end{center}
+\column{0.3\textwidth}
+\begin{center}
+ \includegraphics[width=0.8\columnwidth]{./img/sensor.pdf}
+ % sensor.pdf: 81x195 pixel, 72dpi, 2.86x6.88 cm, bb=0 0 81 195
+\end{center}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Sensores - CNY70 ¿Y cómo veo la linea?}
+\begin{center}
+ \includegraphics[height=0.8\textheight]{./img/sensores_image.pdf}
+ % pwm_image.pdf: 166x91 pixel, 72dpi, 5.86x3.21 cm, bb=0 0 166 91
+\end{center}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Puente H - DRV8833}
+Para manejar los motores de CC usamos un IC (DRV8833) que tiene 2 puentes H.
+\begin{columns}
+\column{0.6\textwidth}
+\begin{center}
+ \includegraphics[width=\columnwidth]{./img/puenteH_1.png}
+ % puenteH_1.png: 1000x614 pixel, 72dpi, 35.28x21.66 cm, bb=0 0 1000 614
+\end{center}
+\column{0.4\textwidth}
+\begin{center}
+ \includegraphics[width=\columnwidth]{./img/l298.jpg}
+ % puenteH_1.png: 1000x614 pixel, 72dpi, 35.28x21.66 cm, bb=0 0 1000 614
+\end{center}
+
+\end{columns}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Puente H - DRV8833}
+Con el puente H podemos cambiar el sentido y velocidad de los motores.
+\begin{center}
+ \includegraphics[width=\columnwidth]{./img/puenteH_2.png}
+ % puenteH_1.png: 1000x614 pixel, 72dpi, 35.28x21.66 cm, bb=0 0 1000 614
+\end{center}
+.. y ¿Cómo variamos la velocidad?
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{Puente H - DRV8833}
+% diagrama de un puente H del 298, con los enables y los IN#.
+% tablita de la hoja de datos.
+Pero en realidad, no lo vamos a usar así. Uso de los puentes H integrados en el L298.
+\begin{columns} 
+\column{0.5\textwidth}
+{%
+\begin{center}
+\begin{tabular}{|c|c|c|l|}\hline
+\textbf{EN} & \textbf{IN1} & \textbf{IN2} & \multicolumn{1}{c|}{\textbf{Motor}}\\\hline
+0 & X & X & Libre\\\hline
+1 & 0 & 0 & Frenado\\\hline
+1 & 1 & 0 & Adelante\\\hline
+1 & 0 & 1 & Atrás\\\hline
+1 & 1 & 1 & Frenado\\\hline
+\end{tabular}
+\end{center}
+}%
+\column{0.5\textwidth}
+ \begin{center}
+ \includegraphics[width=\columnwidth]{./img/l298image.png}
+ % l298image.png: 322x353 pixel, 100dpi, 8.18x8.97 cm, bb=0 0 232 254
+\end{center}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{A trabajar...}
+Con todo lo que ya vimos, ahora sólo necesitan saber donde está conectada cada cosa :)
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Función} & \textbf{PinName} & \textbf{Función} & \textbf{PinName}\\\hline
+Farol 1 & p9 & PH1 IN1 & p28\\\hline
+Farol 2 & p10 & PH1 IN2 & p27\\\hline
+Led Sensor 1 & p14 & PH1 EN & p25\\\hline
+Sensor 1 & p16 & PH2 IN1 & p30\\\hline
+Led Sensor 2 & p13 & PH2 IN2 & p29\\\hline
+Sensor 2 & p17 & PH2 EN & p26\\\hline
+Botón & p18 & & \\\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+
+\end{document}
+
+
