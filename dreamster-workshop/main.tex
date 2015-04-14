@@ -151,75 +151,26 @@ Qué podemos hacer:
 \subsection{Uso del compilador y IO}
 
 \begin{frame}[fragile]
- \frametitle{Primeros pasos}
+\frametitle{Nuestro primer código}
+Vamos a prender un led $\rightarrow$ Creamos un programa nuevo.
 \begin{columns}
  \column{0.5\textwidth}
-\begin{enumerate}
- \item Usuarios registrados.
+  \begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
+  int led = 13;
+  setup() {
+    pinMode(13, OUTPUT);
+    digitalWrite(13, HIGH);
+  }
+  loop() {}
+  \end{Verbatim} 
+ \column{0.5\textwidth}
 
-Nombre de usuario: \verb|taller_mbed_0X|.
+   \includegraphics[width=\columnwidth]{./img/arduino_led.png}
 
-Por ej.: \verb|taller_mbed_01|
-
-Clave: \verb|taller_mbed_0X|
- \item Entrar al compilador.
-\end{enumerate}
-\column{0.5\textwidth}
-\begin{center}
- \includegraphics[width=\columnwidth]{./img/web.png}
- % web.png: 993x736 pixel, 98dpi, 25.74x19.08 cm, bb=0 0 730 541
-\end{center}
 \end{columns}
-\end{frame}
-
-\begin{frame}[fragile]
- \frametitle{Nuestro primer código}
-Vamos a prender un led $\rightarrow$ Creamos un programa nuevo.
-\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
- DigitalOut myled(LED1);
-          ...
- myled = 1;
-\end{Verbatim} 
-Muy fácil.... usemos el botón para prender el led..
-\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
- DigitalIn boton(p18);
-          ...
- boton.mode(PullUp);
- if (boton == 0) {
-  wait(0.01);     //debounce.
-  if (boton == 0) //hacer algo.
-          ...
-\end{Verbatim} 
 \end{frame}
 
 \subsection{Timers y PWM}
-\begin{frame}[fragile]
- \frametitle{Complicándola un poco}
-Dimmer para los leds.
-\begin{columns}
-\column{0.6\textwidth}
-\begin{description}
- \item[PWM:] Pulse Width Modulation, modulación de ancho de pulso.
- \item[Ticker:] Interfaz usada para definir un evento que se repite a intervalos regulares de tiempo.
- \end{description}
-\column{0.4\textwidth}
-\begin{center}
- \includegraphics[width=\textwidth]{./img/pwm_image.pdf}
- % pwm_image.pdf: 166x91 pixel, 72dpi, 5.86x3.21 cm, bb=0 0 166 91
-\end{center}
-\end{columns}
-
-\begin{center}
-\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
- Ticker evento;
- PwmOut led1(LED1);
-      ...
- evento.attach(&dimmer, 0.1);
-      ...
- led1 = led1 + 0.1;
-\end{Verbatim}
-\end{center}
-\end{frame}
 
 \subsection{Puerto Serie}
 \begin{frame}[fragile]
@@ -231,7 +182,7 @@ Todos lo estábamos esperando...
   pc.printf("Hello World!\n"); 
 \end{Verbatim}
 \begin{center}
- \includegraphics[width=0.6\textwidth]{./img/AccessPort.jpg}
+ %\includegraphics[width=0.6\textwidth]{./img/AccessPort.jpg}
  % AccessPort.jpg: 772x512 pixel, 762dpi, 2.57x1.71 cm, bb=0 0 73 48
 \end{center}
 \end{frame}
@@ -252,12 +203,12 @@ Los autitos los pudimos hacer gracias a la ayuda del Club de Robótica y la rama
 \begin{columns}
 \column{.5\textwidth}
 \begin{center}
- \includegraphics[width=\columnwidth]{./img/robotica.png}
+ \includegraphics[width=\columnwidth]{./img/cdrfiuba.png}
  % robotica.png: 2326x2340 pixel, 90dpi, 65.65x66.05 cm, bb=0 0 1861 1872
 \end{center}
 \column{.5\textwidth}
 \begin{center}
- \includegraphics[width=\columnwidth]{./img/ieee.png}
+ %\includegraphics[width=\columnwidth]{./img/ieee.png}
  % robotica.png: 2326x2340 pixel, 90dpi, 65.65x66.05 cm, bb=0 0 1861 1872
 \end{center}
 \end{columns}
@@ -265,25 +216,6 @@ Los autitos los pudimos hacer gracias a la ayuda del Club de Robótica y la rama
 \end{frame}
 
 \section{Conociendo la planta}
-\subsection{Vista general}
-\begin{frame}
- \frametitle{El mbed Car - top}
-\begin{center}
- \includegraphics[height=0.8\textheight]{./img/mbed_car_top.png}
- % mbed_car_top.pdf: 2147x1792 pixel, 72dpi, 75.74x63.22 cm, bb=0 0 2147 1792
-\end{center}
-% Foto del auto con las partes marcadas
-\end{frame}
-
-\begin{frame}
- \frametitle{El mbed Car - bottom}
-\begin{center}
- \includegraphics[height=0.8\textheight]{./img/mbed_car_bottom.png}
- % mbed_car_top.pdf: 2147x1792 pixel, 72dpi, 75.74x63.22 cm, bb=0 0 2147 1792
-\end{center}
-% Foto del auto con las partes marcadas
-\end{frame}
-
 
 \subsection{Actuadores y sensores}
 \begin{frame}[fragile]
@@ -293,7 +225,7 @@ Los autitos los pudimos hacer gracias a la ayuda del Club de Robótica y la rama
 La salida del sensor es un valor analógico $0 \sim 3.3V$, conectado al AD del mbed. Usando \verb|AnalogIn::read()| se ve 
 como un valor float entre 0 y 1.
 \begin{center}
- \includegraphics[width=0.3\columnwidth]{./img/cny70.jpg}
+ \includegraphics[width=0.3\columnwidth]{./img/tccrt1000.jpg}
  % cny70.jpg: 250x238 pixel, 180dpi, 3.53x3.36 cm, bb=0 0 100 95
 \end{center}
 \column{0.3\textwidth}
@@ -323,7 +255,7 @@ Para manejar los motores de CC usamos un IC (DRV8833) que tiene 2 puentes H.
 \end{center}
 \column{0.4\textwidth}
 \begin{center}
- \includegraphics[width=\columnwidth]{./img/l298.jpg}
+ \includegraphics[width=\columnwidth]{./img/drv8833.jpg}
  % puenteH_1.png: 1000x614 pixel, 72dpi, 35.28x21.66 cm, bb=0 0 1000 614
 \end{center}
 
@@ -343,30 +275,50 @@ Con el puente H podemos cambiar el sentido y velocidad de los motores.
 
 \begin{frame}
  \frametitle{Puente H - DRV8833}
-% diagrama de un puente H del 298, con los enables y los IN#.
-% tablita de la hoja de datos.
-Pero en realidad, no lo vamos a usar así. Uso de los puentes H integrados en el L298.
 \begin{columns} 
-\column{0.5\textwidth}
+\column{0.4\textwidth}
 {%
 \begin{center}
-\begin{tabular}{|c|c|c|l|}\hline
-\textbf{EN} & \textbf{IN1} & \textbf{IN2} & \multicolumn{1}{c|}{\textbf{Motor}}\\\hline
-0 & X & X & Libre\\\hline
-1 & 0 & 0 & Frenado\\\hline
-1 & 1 & 0 & Adelante\\\hline
-1 & 0 & 1 & Atrás\\\hline
-1 & 1 & 1 & Frenado\\\hline
+\begin{tabular}{|c|c|c|}\hline
+\textbf{IN1} & \textbf{IN2} & \textbf{Motor} \\ \hline
+PWM & 0 & Adelante\\ \hline
+0 & PWM & Atrás\\ \hline
+1 & PWM & Adelante\\ \hline
+PWM & 1 & Atrás\\ \hline
 \end{tabular}
 \end{center}
 }%
-\column{0.5\textwidth}
+\column{0.6\textwidth}
  \begin{center}
- \includegraphics[width=\columnwidth]{./img/l298image.png}
+ \includegraphics[width=\columnwidth]{./img/drv8833.png}
  % l298image.png: 322x353 pixel, 100dpi, 8.18x8.97 cm, bb=0 0 232 254
 \end{center}
 \end{columns}
 \end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{PWM ????}
+ \begin{columns}
+ \column{0.4\textwidth}
+\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
+int ledPin = 9;
+void setup() {
+  pinMode(ledPin, OUTPUT);
+}
+void loop() {
+  analogWrite(ledPin, 100);
+}
+\end{Verbatim}
+  \column{0.55\textwidth}
+  \flushright
+  \includegraphics[width=\columnwidth]{./img/PWM.png}
+ \end{columns}
+
+\begin{center}
+ 
+\end{center}
+\end{frame}
+
 
 \begin{frame}
 \frametitle{A trabajar...}
