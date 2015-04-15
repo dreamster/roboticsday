@@ -151,17 +151,21 @@ Qué podemos hacer:
 \subsection{Uso del compilador y IO}
 
 \begin{frame}[fragile]
-\frametitle{Nuestro primer código}
-Vamos a prender un led $\rightarrow$ Creamos un programa nuevo.
+\frametitle{Nuestro primer código - Prender un led}
+
 \begin{columns}
  \column{0.5\textwidth}
   \begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
   int led = 13;
   setup() {
-    pinMode(13, OUTPUT);
-    digitalWrite(13, HIGH);
+    pinMode(led, OUTPUT);
   }
-  loop() {}
+  loop() {
+    digitalWrite(led, HIGH);
+    delay(1000);
+    digitalWrite(led, LOW);
+    delay(1000);
+  }
   \end{Verbatim} 
  \column{0.5\textwidth}
 
