@@ -23,7 +23,7 @@
 \author[Robotics Day]
 {
 The Dreamster Community \\
-Lucas, Lucía, Sebastián, Viviana, Martín, Gisela, Ignacio
+Lucas, Lucía, Sebastián, Viviana, Martín, Gisela, Ignacio, Gary
 }
 
 \usepackage{default}
@@ -170,8 +170,6 @@ Vamos a prender un led $\rightarrow$ Creamos un programa nuevo.
 \end{columns}
 \end{frame}
 
-\subsection{Timers y PWM}
-
 \subsection{Puerto Serie}
 \begin{frame}[fragile]
  \frametitle{¡Hola mundo!}
@@ -186,6 +184,69 @@ Todos lo estábamos esperando...
  % AccessPort.jpg: 772x512 pixel, 762dpi, 2.57x1.71 cm, bb=0 0 73 48
 \end{center}
 \end{frame}
+
+\subsection{Sensores de distancia}
+
+\begin{frame}[fragile]
+ \frametitle{Sensores de distancia - HC-SR04}
+\begin{columns}
+\column{0.7\textwidth}
+Estos sensores nos permiten medir la distancia a un objeto mediante el uso de pulsos ultrasónicos.
+\begin{center}
+ \includegraphics[width=1.0\columnwidth]{./img/hc-sr04-timing-diagram.png}
+ % cny70.jpg: 250x238 pixel, 180dpi, 3.53x3.36 cm, bb=0 0 100 95
+\end{center}
+\column{0.3\textwidth}
+\begin{center}
+ \includegraphics[width=1.0\columnwidth]{./img/hc-sr04.jpg}
+ % sensor.pdf: 81x195 pixel, 72dpi, 2.86x6.88 cm, bb=0 0 81 195
+\end{center}
+\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Usando el Sensor de distancia con Arduino}
+Vamos a leer el sensor de distancia $\rightarrow$ Creamos un programa nuevo.
+\begin{columns}
+ \column{0.5\textwidth}
+  \begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt,fontsize=\tiny]
+  const int TriggerPinA = A3;
+  const int EchoPinA = 8;
+  long Duration = 0;
+  
+  void setup(){
+    pinMode(TriggerPinA, OUTPUT)
+    pinMode(EchoPinA, INPUT);
+    Serial.begin(9600);
+  }
+  
+  void loop(){ 
+    digitalWrite(TriggerPinA, LOW);                   
+    delayMicroseconds(2);
+    digitalWrite(TriggerPinA, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(TriggerPinA, LOW);
+   
+    Duration = pulseIn(EchoPinA, HIGH);
+
+    // Calculates the Distance in mm
+    long Distance_mm = ((Duration /2.9) / 2);
+   
+    Serial.print("Distance = ");
+    Serial.print(Distance_mm);
+    Serial.println(" mm");
+   
+    delay(1000);
+  }
+    \end{Verbatim} 
+ \column{0.5\textwidth}
+
+   \includegraphics[width=\columnwidth]{./img/arduino_hc-sr04.png}
+
+\end{columns}
+\end{frame}
+
+\subsection{Timers y PWM}
 
 \begin{frame}
  \frametitle{Intervalo!!}
@@ -246,7 +307,7 @@ como un valor float entre 0 y 1.
 
 \begin{frame}
  \frametitle{Puente H - DRV8833}
-Para manejar los motores de CC usamos un IC (DRV8833) que tiene 2 puentes H.
+Para manejar los motores de CC usamos un IC (DRV8837) que tiene 2 puentes H.
 \begin{columns}
 \column{0.6\textwidth}
 \begin{center}
@@ -263,7 +324,7 @@ Para manejar los motores de CC usamos un IC (DRV8833) que tiene 2 puentes H.
 \end{frame}
 
 \begin{frame}
- \frametitle{Puente H - DRV8833}
+ \frametitle{Puente H - DRV8837}
 Con el puente H podemos cambiar el sentido y velocidad de los motores.
 \begin{center}
  \includegraphics[width=\columnwidth]{./img/puenteH_2.png}
@@ -274,7 +335,7 @@ Con el puente H podemos cambiar el sentido y velocidad de los motores.
 \end{frame}
 
 \begin{frame}
- \frametitle{Puente H - DRV8833}
+ \frametitle{Puente H - DRV8837}
 \begin{columns} 
 \column{0.4\textwidth}
 {%
@@ -300,13 +361,34 @@ PWM & 1 & Atrás\\ \hline
  \frametitle{PWM ????}
  \begin{columns}
  \column{0.4\textwidth}
-\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
-int ledPin = 9;
-void setup() {
-  pinMode(ledPin, OUTPUT);
+\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt, fontsize=\tiny]
+int kMotorLP = 5;
+int kMotorLN = 6;
+
+void setup(){
+  digitalWrite(kMotorLP, LOW);
+  digitalWrite(kMotorLN, LOW); 
 }
-void loop() {
-  analogWrite(ledPin, 100);
+
+void loop(){
+  digitalWrite(kMotorLN, LOW);
+  for(int i = 0; i < 255; i++){
+  	analogWrite(kMotorLP,  i);
+  	delay(25);
+  }
+  
+  delay(500);
+  digitalWrite(kMotorLP, LOW);
+  digitalWrite(kMotorLN, LOW);
+  delay(500);
+    
+  digitalWrite(kMotorLP, LOW);
+  for(int i = 0; i < 255; i++){
+    analogWrite(kMotorLN,  i);
+    delay(25);
+  }
+  
+  delay(1000);
 }
 \end{Verbatim}
   \column{0.55\textwidth}
@@ -327,13 +409,14 @@ Con todo lo que ya vimos, ahora sólo necesitan saber donde está conectada cada
 \begin{tabular}{|c|c|c|c|}
 \hline
 \textbf{Función} & \textbf{PinName} & \textbf{Función} & \textbf{PinName}\\\hline
-Farol 1 & p9 & PH1 IN1 & p28\\\hline
-Farol 2 & p10 & PH1 IN2 & p27\\\hline
-Led Sensor 1 & p14 & PH1 EN & p25\\\hline
-Sensor 1 & p16 & PH2 IN1 & p30\\\hline
-Led Sensor 2 & p13 & PH2 IN2 & p29\\\hline
-Sensor 2 & p17 & PH2 EN & p26\\\hline
-Botón & p18 & & \\\hline
+Motor Izq. P & 5 & Linea Izq. & A0\\\hline
+Motor Izq. N & 6 & Linea Der. & A1\\\hline
+Motor Der. P & 9 & Sensor US AT & A3\\\hline
+Motor Der. N & 10 & Sensor US AE & 8\\\hline
+Led Rojo & 12 & Sensor US BT & A4\\\hline
+Led Verde & 11 & Sensor US BE & 2\\\hline
+Led Azul & 13 & Sensor US CT & A5\\\hline
+& & Sensor US CE & 7 \\\hline
 \end{tabular}
 \end{center}
 \end{frame}
