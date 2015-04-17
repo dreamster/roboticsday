@@ -36,6 +36,22 @@ Lucas, Lucía, Sebastián, Viviana, Martín, Gisela, Ignacio, Gary
 \subsection{Objetivos}
 
 \begin{frame}
+ \frametitle{Bienvenidos}
+
+\begin{columns}
+\column{.5\textwidth}
+\begin{center}
+ \includegraphics[width=\columnwidth]{./img/cdrfiuba.png}
+\end{center}
+\column{.5\textwidth}
+\begin{center}
+ \includegraphics[width=\columnwidth]{./img/py.jpg}
+\end{center}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
  \frametitle{¿Qué vamos a hacer?}
 
 \begin{center}
@@ -78,12 +94,23 @@ Lucas, Lucía, Sebastián, Viviana, Martín, Gisela, Ignacio, Gary
 \begin{block}{Arduino.cc dice:} 
 \begin{itemize}
  \item Computadora que nos permite interactuar con el mundo real.
- \item Utiliza un microcontrolador simple y un entorno de desarrollo sencillo.
+ \item Microcontrolador simple + entorno de desarrollo sencillo.
 \end{itemize}
 \end{block}
 \begin{center}
  \includegraphics[height=0.6\textheight]{./img/arduino-leonardo-pinout.png}
 \end{center}
+\end{frame}
+
+% Diferentes Arduinos
+\begin{frame}
+ \frametitle{¿Qué es Arduino?}
+ \includegraphics[width=\columnwidth]{./img/arduinos.jpg}
+  \begin{itemize}
+   \item Interfaces estándar.
+   \item Diseños libres.
+   \item Muchas formas y tamaños.
+  \end{itemize}
 \end{frame}
 
 % Programando arduino
@@ -129,24 +156,6 @@ Lucas, Lucía, Sebastián, Viviana, Martín, Gisela, Ignacio, Gary
  \end{center}
 \end{frame}
 
-% La competencia
-\begin{frame}
- \frametitle{La competencia}
-Tareas:
-\begin{itemize}
- \item Encontrar un objeto
- \item Moverse en la dirección del objeto
- \item Identificar el borde de la mesa
-\end{itemize}
-Qué podemos hacer:
-\begin{itemize}
- \item Medir distancias
- \item Medir el color del piso
- \item Movernos
-\end{itemize}
- \end{frame}
-
-
 \section{Programación del Dreamster}
 \subsection{Uso del compilador y IO}
 
@@ -174,19 +183,32 @@ Qué podemos hacer:
 \end{columns}
 \end{frame}
 
-\subsection{Puerto Serie}
+\subsection{Comunicarnos}
 \begin{frame}[fragile]
- \frametitle{¡Hola mundo!}
-Todos lo estábamos esperando...
-\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
-  Serial pc(USBTX, USBRX); // tx, rx
-            ...
-  pc.printf("Hello World!\n"); 
-\end{Verbatim}
+ \frametitle{Puerte serie}
+
 \begin{center}
- %\includegraphics[width=0.6\textwidth]{./img/AccessPort.jpg}
- % AccessPort.jpg: 772x512 pixel, 762dpi, 2.57x1.71 cm, bb=0 0 73 48
+ \includegraphics[height=0.4\textheight]{./img/serial.png}
 \end{center}
+
+\begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt,fontsize=\tiny]
+int incomingByte = 0;
+
+void setup() {
+    Serial.begin(9600);     // abre el puerto en 9600
+}
+
+void loop() {
+    // Envio datos si me dicen algo por el serie
+    if (Serial.available() > 0) {
+        // leemos un byte:
+        incomingByte = Serial.read();
+        // devolvemos:
+        Serial.print("Lei: ");
+        Serial.println(incomingByte, DEC);
+    }
+}
+\end{Verbatim}
 \end{frame}
 
 \subsection{Sensores de distancia}
@@ -210,7 +232,6 @@ Estos sensores nos permiten medir la distancia a un objeto mediante el uso de pu
 
 \begin{frame}[fragile]
 \frametitle{Usando el Sensor de distancia con Arduino}
-Vamos a leer el sensor de distancia $\rightarrow$ Creamos un programa nuevo.
 \begin{columns}
  \column{0.5\textwidth}
   \begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt,fontsize=\tiny]
@@ -261,24 +282,6 @@ Vamos a leer el sensor de distancia $\rightarrow$ Creamos un programa nuevo.
 \vspace{2cm}
 \end{frame}
 
-\begin{frame}
- \frametitle{Bienvenidos}
-
-Los autitos los pudimos hacer gracias a la ayuda del Club de Robótica y la rama IEEE de FIUBA.
-\begin{columns}
-\column{.5\textwidth}
-\begin{center}
- \includegraphics[width=\columnwidth]{./img/cdrfiuba.png}
- % robotica.png: 2326x2340 pixel, 90dpi, 65.65x66.05 cm, bb=0 0 1861 1872
-\end{center}
-\column{.5\textwidth}
-\begin{center}
- %\includegraphics[width=\columnwidth]{./img/ieee.png}
- % robotica.png: 2326x2340 pixel, 90dpi, 65.65x66.05 cm, bb=0 0 1861 1872
-\end{center}
-\end{columns}
-
-\end{frame}
 
 \section{Conociendo la planta}
 
@@ -408,7 +411,7 @@ void loop(){
 
 \begin{frame}
 \frametitle{A trabajar...}
-Con todo lo que ya vimos, ahora sólo necesitan saber donde está conectada cada cosa :)
+Donde están conectadas las cosas en el Dreamster:
 \begin{center}
 \begin{tabular}{|c|c|c|c|}
 \hline
@@ -425,6 +428,22 @@ Led Azul & 13 & Sensor US CT & A5\\\hline
 \end{center}
 \end{frame}
 
+% La competencia
+\begin{frame}
+ \frametitle{La competencia}
+Tareas:
+\begin{itemize}
+ \item Encontrar un objeto
+ \item Moverse en la dirección del objeto
+ \item Identificar el borde de la mesa
+\end{itemize}
+Qué podemos hacer:
+\begin{itemize}
+ \item Medir distancias
+ \item Medir el color del piso
+ \item Movernos
+\end{itemize}
+\end{frame}
 
 \end{document}
 
