@@ -181,6 +181,13 @@ Lucas, Lucía, Sebastián, Viviana, Martín, Gisela, Ignacio, Gary
    \includegraphics[width=\columnwidth]{./img/arduino_led.png}
 
 \end{columns}
+
+
+ \begin{center}
+ \vspace{0.5cm}
+ \textbf{Probemos si funciona!!!}
+ \end{center}
+
 \end{frame}
 
 \subsection{Comunicarnos}
@@ -375,36 +382,39 @@ PWM & 1 & Atrás\\ \hline
 \end{frame}
 
 \begin{frame}[fragile]
- \frametitle{PWM ????}
+ \frametitle{¿Pero que es un PWM?}
  \begin{columns}
  \column{0.4\textwidth}
 \begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt, fontsize=\tiny]
 int kMotorLP = 5;
 int kMotorLN = 6;
 
+/*
+Configuramos los pines en cero para
+apagar el motor
+*/
 void setup(){
   digitalWrite(kMotorLP, LOW);
-  digitalWrite(kMotorLN, LOW); 
+  digitalWrite(kMotorLN, LOW);
 }
 
 void loop(){
+
+  /*
+  Incrementamos la velocidad progresivamente
+  */
   digitalWrite(kMotorLN, LOW);
   for(int i = 0; i < 255; i++){
   	analogWrite(kMotorLP,  i);
-  	delay(25);
+  	delay(100);
   }
-  
-  delay(500);
+
+  /*
+  Detenemos el motor para comenzar nuevamente
+  */
+  delay(1000);
   digitalWrite(kMotorLP, LOW);
   digitalWrite(kMotorLN, LOW);
-  delay(500);
-    
-  digitalWrite(kMotorLP, LOW);
-  for(int i = 0; i < 255; i++){
-    analogWrite(kMotorLN,  i);
-    delay(25);
-  }
-  
   delay(1000);
 }
 \end{Verbatim}
