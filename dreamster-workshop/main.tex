@@ -61,7 +61,7 @@ Lucas, Lucía, Sebastián, Viviana, Martín, Gisela, Ignacio, Gary
 \begin{block}{¿Cómo?}
 \begin{itemize}
  \item Usando un Dreamster como base.
- \item Arduino para ensenarle a hacer cosas.
+ \item Arduino para enseñarle a hacer cosas.
 \end{itemize}
 \end{block}
 
@@ -81,7 +81,7 @@ Lucas, Lucía, Sebastián, Viviana, Martín, Gisela, Ignacio, Gary
 \begin{itemize}
  \item Cada equipo va a tener un robot
  \item Hoy y mañana preparamos los robots.
- \item El domingo hacemos una comptencia.
+ \item El domingo hacemos una competencia.
 \end{itemize}
 
 \end{frame}
@@ -280,39 +280,49 @@ Estos sensores nos permiten medir la distancia a un objeto mediante el uso de pu
 
 \subsection{Timers y PWM}
 
-\begin{frame}
- \frametitle{Intervalo!!}
-\vspace{2cm}
-\begin{center}
-\Huge{Nos vemos en 15 minutos.}
-\end{center}
-\vspace{2cm}
-\end{frame}
-
+%\begin{frame}
+% \frametitle{Intervalo!!}
+%\vspace{2cm}
+%\begin{center}
+%\Huge{Nos vemos en 15 minutos.}
+%\end{center}
+%\vspace{2cm}
+%\end{frame}
 
 \section{Conociendo la planta}
 
 \subsection{Actuadores y sensores}
+
 \begin{frame}[fragile]
  \frametitle{Sensores - TCRT1000}
-\begin{columns}
+ \begin{columns}
 \column{0.7\textwidth}
-La salida del sensor es un valor analógico $0 \sim 3.3V$, conectado al AD del mbed. Usando \verb|AnalogIn::read()| se ve 
-como un valor float entre 0 y 1.
-\begin{center}
- \includegraphics[width=0.3\columnwidth]{./img/tccrt1000.jpg}
- % cny70.jpg: 250x238 pixel, 180dpi, 3.53x3.36 cm, bb=0 0 100 95
-\end{center}
+
+ \begin{Verbatim}[formatcom=\color{red},fontseries=b, numbers=left,numbersep=3pt]
+const int sensor = A0;
+const int led = 13;
+...
+// leer el valor del sensor
+int medicion = analogRead(sensor);
+// ajustamos el brillo del led
+char out = map(medicion, 0, 1023, 0, 255);
+analogWrite(led, out);
+\end{Verbatim}
+
+\includegraphics[width=0.3\columnwidth]{./img/tccrt1000.jpg}
+
 \column{0.3\textwidth}
 \begin{center}
- \includegraphics[width=0.8\columnwidth]{./img/sensor.pdf}
- % sensor.pdf: 81x195 pixel, 72dpi, 2.86x6.88 cm, bb=0 0 81 195
+
+\includegraphics[width=0.8\columnwidth]{./img/sensor.pdf}
+% sensor.pdf: 81x195 pixel, 72dpi, 2.86x6.88 cm, bb=0 0 81 195
+
 \end{center}
 \end{columns}
 \end{frame}
 
 \begin{frame}
-\frametitle{Sensores - CNY70 ¿Y cómo veo la linea?}
+\frametitle{Sensores - TCRT1000}
 \begin{center}
  \includegraphics[height=0.8\textheight]{./img/sensores_image.pdf}
  % pwm_image.pdf: 166x91 pixel, 72dpi, 5.86x3.21 cm, bb=0 0 166 91
@@ -321,7 +331,7 @@ como un valor float entre 0 y 1.
 
 \begin{frame}
  \frametitle{Puente H - DRV8833}
-Para manejar los motores de CC usamos un IC (DRV8837) que tiene 2 puentes H.
+Para manejar los motores de CC usamos un IC (DRV8833) que tiene 2 puentes H.
 \begin{columns}
 \column{0.6\textwidth}
 \begin{center}
@@ -338,7 +348,7 @@ Para manejar los motores de CC usamos un IC (DRV8837) que tiene 2 puentes H.
 \end{frame}
 
 \begin{frame}
- \frametitle{Puente H - DRV8837}
+ \frametitle{Puente H - DRV8833}
 Con el puente H podemos cambiar el sentido y velocidad de los motores.
 \begin{center}
  \includegraphics[width=\columnwidth]{./img/puenteH_2.png}
@@ -349,7 +359,7 @@ Con el puente H podemos cambiar el sentido y velocidad de los motores.
 \end{frame}
 
 \begin{frame}
- \frametitle{Puente H - DRV8837}
+ \frametitle{Puente H - DRV8833}
 \begin{columns} 
 \column{0.4\textwidth}
 {%
